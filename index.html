@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Text Generator - CleanCopyPaste.in</title>
+    <meta name="description" content="Convert normal text to Japanese-style characters for social media bios, profiles, and designs. Copy and paste these stylish fonts.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .font-option:hover {
+            transform: scale(1.03);
+            transition: all 0.2s ease;
+        }
+        .copied-message {
+            animation: fadeOut 2s ease-in-out forwards;
+        }
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Japanese Text Generator</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Convert normal text to Japanese-style characters for your social media bios, profiles, and designs.
+                Copy and paste these stylish fonts to enhance your content!
+            </p>
+        </header>
+
+        <!-- Main Tool -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8 max-w-3xl mx-auto">
+            <!-- Input Section -->
+            <div class="mb-6">
+                <label for="inputText" class="block text-sm font-medium text-gray-700 mb-2">Enter your text:</label>
+                <textarea 
+                    id="inputText" 
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                    rows="3" 
+                    placeholder="Type or paste your text here..."
+                ></textarea>
+            </div>
+
+            <!-- Output Section -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-sm font-medium text-gray-700">Japanese-style text:</label>
+                    <button 
+                        id="copyAllBtn" 
+                        class="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                    >
+                        Copy All
+                    </button>
+                </div>
+                <div id="outputContainer" class="space-y-4">
+                    <!-- Font options will be generated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm mt-12">
+            <p>© 2025 cleancopypaste.in - Free Japanese Text Generator Tool</p>
+        </footer>
+    </div>
+
+    <script>
+        // Japanese font styles data
+        const japaneseFonts = [
+            {
+                name: "Standard Japanese",
+                preview: "日本テキスト",
+                transform: (text) => {
+                    const map = {
+                        'a': 'ﾑ', 'b': '乃', 'c': 'ᄃ', 'd': 'り', 'e': '乇',
+                        'f': 'ｷ', 'g': 'ム', 'h': 'ん', 'i': 'ﾉ', 'j': 'ﾌ',
+                        'k': 'ズ', 'l': 'ﾚ', 'm': 'ﾶ', 'n': '刀', 'o': 'の',
+                        'p': 'ｱ', 'q': 'ゐ', 'r': '尺', 's': '丂', 't': 'ｲ',
+                        'u': 'ひ', 'v': '√', 'w': '山', 'x': 'メ', 'y': 'ﾘ', 'z': '乙'
+                    };
+                    return text.toLowerCase().split('').map(c => map[c] || c).join('');
+                }
+            },
+            {
+                name: "Katakana Style",
+                preview: "カタカナ",
+                transform: (text) => {
+                    const map = {
+                        'a': 'ア', 'b': 'バ', 'c': 'カ', 'd': 'ダ', 'e': 'エ',
+                        'f': 'フ', 'g': 'ガ', 'h': 'ハ', 'i': 'イ', 'j': 'ジャ',
+                        'k': 'カ', 'l': 'ラ', 'm': 'マ', 'n': 'ナ', 'o': 'オ',
+                        'p': 'パ', 'q': 'ク', 'r': 'ラ', 's': 'サ', 't': 'タ',
+                        'u': 'ウ', 'v': 'ヴ', 'w': 'ワ', 'x': 'クス', 'y': 'ヤ', 'z': 'ザ'
+                    };
+                    return text.toLowerCase().split('').map(c => map[c] || c).join('');
+                }
+            },
+            {
+                name: "Kanji Style",
+                preview: "漢字",
+                transform: (text) => {
+                    const map = {
+                        'a': '亜', 'b': '武', 'c': '千', 'd': '道', 'e': '絵',
+                        'f': '風', 'g': '月', 'h': '火', 'i': '意', 'j': '十',
+                        'k': '気', 'l': '力', 'm': '水', 'n': '南', 'o': '男',
+                        'p': '平', 'q': '九', 'r': '龍', 's': '山', 't': '天',
+                        'u': '雨', 'v': '五', 'w': '女', 'x': '六', 'y': '夜', 'z': '禅'
+                    };
+                    return text.toLowerCase().split('').map(c => map[c] || c).join('');
+                }
+            },
+            {
+                name: "Circle Style",
+                preview: "◯◯◯◯◯",
+                transform: (text) => {
+                    const map = {
+                        'a': '㋐', 'b': '㋑', 'c': '㋒', 'd': '㋓', 'e': '㋔',
+                        'f': '㋕', 'g': '㋖', 'h': '㋗', 'i': '㋘', 'j': '㋙',
+                        'k': '㋚', 'l': '㋛', 'm': '㋜', 'n': '㋝', 'o': '㋞',
+                        'p': '㋟', 'q': '㋠', 'r': '㋡', 's': '㋢', 't': '㋣',
+                        'u': '㋤', 'v': '㋥', 'w': '㋦', 'x': '㋧', 'y': '㋨', 'z': '㋩'
+                    };
+                    return text.toLowerCase().split('').map(c => map[c] || c).join('');
+                }
+            },
+            {
+                name: "Square Style",
+                preview: "🄰🄱🄲",
+                transform: (text) => {
+                    const map = {
+                        'a': '🄰', 'b': '🄱', 'c': '🄲', 'd': '🄳', 'e': '🄴',
+                        'f': '🄵', 'g': '🄶', 'h': '🄷', 'i': '🄸', 'j': '🄹',
+                        'k': '🄺', 'l': '🄻', 'm': '🄼', 'n': '🄽', 'o': '🄾',
+                        'p': '🄿', 'q': '🅀', 'r': '🅁', 's': '🅂', 't': '🅃',
+                        'u': '🅄', 'v': '🅅', 'w': '🅆', 'x': '🅇', 'y': '🅈', 'z': '🅉'
+                    };
+                    return text.toLowerCase().split('').map(c => map[c] || c).join('');
+                }
+            }
+        ];
+
+        // DOM elements
+        const inputText = document.getElementById('inputText');
+        const outputContainer = document.getElementById('outputContainer');
+        const copyAllBtn = document.getElementById('copyAllBtn');
+
+        // Generate font options on page load
+        function generateFontOptions() {
+            outputContainer.innerHTML = '';
+            japaneseFonts.forEach((font, index) => {
+                const option = document.createElement('div');
+                option.className = 'font-option bg-gray-50 p-4 rounded-lg border border-gray-200';
+                option.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="font-medium text-gray-800">${font.name}</h3>
+                            <p class="text-sm text-gray-500">Preview: ${font.preview}</p>
+                        </div>
+                        <button 
+                            data-index="${index}" 
+                            class="copy-btn text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                        >
+                            Copy
+                        </button>
+                    </div>
+                    <div 
+                        id="output-${index}" 
+                        class="output-text text-lg p-2 bg-white rounded border border-gray-300 min-h-10"
+                    ></div>
+                    <div class="copied-message text-green-500 text-sm mt-1 hidden">Copied!</div>
+                `;
+                outputContainer.appendChild(option);
+            });
+        }
+
+        // Update outputs when input changes
+        inputText.addEventListener('input', updateOutputs);
+
+        function updateOutputs() {
+            const text = inputText.value;
+            if (!text.trim()) {
+                document.querySelectorAll('.output-text').forEach(el => el.textContent = '');
+                return;
+            }
+
+            japaneseFonts.forEach((font, index) => {
+                const outputEl = document.getElementById(`output-${index}`);
+                outputEl.textContent = font.transform(text);
+            });
+        }
+
+        // Copy to clipboard functionality
+        outputContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('copy-btn')) {
+                const index = e.target.getAttribute('data-index');
+                const outputEl = document.getElementById(`output-${index}`);
+                const textToCopy = outputEl.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Show copied message
+                    const message = e.target.parentElement.parentElement.querySelector('.copied-message');
+                    message.classList.remove('hidden');
+                    setTimeout(() => message.classList.add('hidden'), 2000);
+                });
+            }
+        });
+
+        // Copy all outputs
+        copyAllBtn.addEventListener('click', () => {
+            let allText = '';
+            document.querySelectorAll('.output-text').forEach(el => {
+                if (el.textContent) {
+                    allText += el.textContent + '\n\n';
+                }
+            });
+            
+            if (allText) {
+                navigator.clipboard.writeText(allText.trim()).then(() => {
+                    // Show feedback
+                    copyAllBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyAllBtn.textContent = 'Copy All';
+                    }, 2000);
+                });
+            }
+        });
+
+        // Initialize
+        generateFontOptions();
+    </script>
+</body>
+</html>
